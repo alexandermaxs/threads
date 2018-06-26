@@ -3,11 +3,15 @@ package com.epam.task3.model;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Condition;
 
 public class CallCenter {
     private static volatile CallCenter instance;
     private BlockingQueue<Operator> staff = new ArrayBlockingQueue<>(3);
-    private BlockingQueue<Client> clientele = new ArrayBlockingQueue<>(15);
+    //private BlockingQueue<Client> clientele = new ArrayBlockingQueue<>(15);
+    ReentrantLock locker = new ReentrantLock();
+    Condition condition = locker.newCondition();
 
     public static CallCenter getInstance() {
         CallCenter localInstance = instance;
@@ -27,18 +31,24 @@ public class CallCenter {
     }
 
     public void connect(Client client){
-        if (staff.peek() != null) {
+        locker.lock();
+        try {
+            while (staff.isEmpty()) {
+                condition.await();
+            }
             Operator active = staff.poll();
             active.serve(client);
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            TimeUnit.SECONDS.sleep(2);
             staff.add(active);
+            //clientele.add(client);
+            condition.signalAll();
+
         }
-        else {
-            clientele.add(client);
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        finally {
+            locker.unlock();
         }
     }
 }
