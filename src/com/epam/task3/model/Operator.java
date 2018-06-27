@@ -1,6 +1,9 @@
 package com.epam.task3.model;
 
+import org.apache.log4j.Logger;
+
 public class Operator {
+    private static final Logger logger = Logger.getLogger(CallCenter.class);
     private String name;
 
     public Operator(String name){
@@ -8,16 +11,11 @@ public class Operator {
     }
 
     public void serve(Client client){
-        try {
-            StringBuilder stringBuilder = new StringBuilder("");
-            stringBuilder.append("Client#");
-            stringBuilder.append(client.getNumber());
-            stringBuilder.append(" is served by Operator#");
-            stringBuilder.append(name);
-            System.out.println(stringBuilder);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        StringBuilder stringBuilder = new StringBuilder("");
+        stringBuilder.append("Client#");
+        stringBuilder.append(client.getNumber());
+        stringBuilder.append(" is served by Operator#");
+        stringBuilder.append(name);
+        logger.info(stringBuilder);
     }
 }

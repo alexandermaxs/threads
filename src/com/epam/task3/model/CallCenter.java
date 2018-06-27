@@ -1,5 +1,6 @@
 package com.epam.task3.model;
 
+import org.apache.log4j.Logger;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -7,9 +8,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
 
 public class CallCenter {
+    private static final Logger logger = Logger.getLogger(CallCenter.class);
     private static volatile CallCenter instance;
     private BlockingQueue<Operator> staff = new ArrayBlockingQueue<>(3);
-    //private BlockingQueue<Client> clientele = new ArrayBlockingQueue<>(15);
     ReentrantLock locker = new ReentrantLock();
     Condition condition = locker.newCondition();
 
@@ -40,12 +41,10 @@ public class CallCenter {
             active.serve(client);
             TimeUnit.SECONDS.sleep(2);
             staff.add(active);
-            //clientele.add(client);
             condition.signalAll();
-
         }
         catch (InterruptedException e){
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         finally {
             locker.unlock();
