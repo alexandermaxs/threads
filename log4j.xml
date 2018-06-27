@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="false">
+    <appender name="FileAppender" class="org.apache.log4j.FileAppender">
+        <param name="Encoding" value="UTF-8" />
+        <param name="File" value="logs/log.txt" />
+        <layout class="org.apache.log4j.PatternLayout" >
+            <param name="ConversionPattern"
+                   value="%d{dd.MM.yyyy HH:mm:ss} [%t] %-5p %c - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelMatchFilter">
+            <param name="LevelToMatch" value="debug" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+        <filter class="org.apache.log4j.varia.LevelMatchFilter">
+            <param name="LevelToMatch" value="info" />
+            <param name="AcceptOnMatch" value="false" />
+        </filter>
+        <filter class="org.apache.log4j.varia.LevelMatchFilter">
+            <param name="LevelToMatch" value="error" />
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+        <filter class="org.apache.log4j.varia.DenyAllFilter" />
+    </appender>
+    <appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <param name="Encoding" value="utf-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="info"/>
+            <param name="LevelMax" value="error"/>
+        </filter>
+    </appender>
+    <logger name="com.epam.task3">
+        <level value="debug" />
+    </logger>
+    <root>
+        <appender-ref ref="FileAppender" />
+        <appender-ref ref="ConsoleAppender"/>
+    </root>
+</log4j:configuration >
