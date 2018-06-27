@@ -13,7 +13,6 @@ public class Starter {
         staff.add(new Operator("Jean"));
         staff.add(new Operator("Diana"));
         CallCenter.getInstance().setStaff(staff);
-
         generateCalls(15);
     }
 
