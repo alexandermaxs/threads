@@ -2,17 +2,13 @@ package com.epam.task3;
 
 import com.epam.task3.model.CallCenter;
 import com.epam.task3.model.Client;
-import com.epam.task3.model.Operator;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.xml.DOMConfigurator;
 
 public class Starter {
     public static void main(String[] args){
-        BlockingQueue<Operator> staff = new ArrayBlockingQueue<>(3);
-        staff.add(new Operator("Olga"));
-        staff.add(new Operator("Jean"));
-        staff.add(new Operator("Diana"));
-        CallCenter.getInstance().setStaff(staff);
+        new DOMConfigurator().doConfigure("log4j.xml", LogManager.getLoggerRepository());
+        CallCenter.getInstance().initialize();
         generateCalls(15);
     }
 
