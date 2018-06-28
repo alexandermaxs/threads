@@ -3,7 +3,7 @@ package com.epam.task3.model;
 import org.apache.log4j.Logger;
 
 public class Operator {
-    private static final Logger logger = Logger.getLogger(CallCenter.class);
+    private static final Logger LOGGER = Logger.getLogger(Operator.class);
     private String name;
 
     public Operator(String name){
@@ -16,6 +16,6 @@ public class Operator {
         stringBuilder.append(client.getNumber());
         stringBuilder.append(" is served by Operator#");
         stringBuilder.append(name);
-        logger.info(stringBuilder);
+        LOGGER.info(stringBuilder);
     }
 }

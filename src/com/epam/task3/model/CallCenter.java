@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
 
 public class CallCenter {
-    private static final Logger logger = Logger.getLogger(CallCenter.class);
+    private static final Logger LOGGER = Logger.getLogger(CallCenter.class);
     private static volatile CallCenter instance;
     private BlockingQueue<Operator> staff = new ArrayBlockingQueue<>(3);
     ReentrantLock locker = new ReentrantLock();
@@ -27,26 +27,26 @@ public class CallCenter {
         return localInstance;
     }
 
-    public void setStaff(BlockingQueue<Operator> staff) {
-        this.staff = staff;
+    public void initialize() {
+        staff.add(new Operator("Olga"));
+        staff.add(new Operator("Jean"));
+        staff.add(new Operator("Diana"));
     }
 
     public void connect(Client client){
-        locker.lock();
         try {
             while (staff.isEmpty()) {
                 condition.await();
             }
+            locker.lock();
             Operator active = staff.poll();
             active.serve(client);
             TimeUnit.SECONDS.sleep(2);
             staff.add(active);
             condition.signalAll();
-        }
-        catch (InterruptedException e){
-            logger.error(e.getMessage());
-        }
-        finally {
+        } catch (InterruptedException e){
+            LOGGER.error(e);
+        } finally {
             locker.unlock();
         }
     }
