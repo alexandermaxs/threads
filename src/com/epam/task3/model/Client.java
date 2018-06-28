@@ -13,6 +13,6 @@ public class Client implements Runnable{
 
     @Override
     public void run() {
-        CallCenter.getInstance().connect(this);
+        CallCenter.getInstance().callOperator().serve(this);
     }
 }
