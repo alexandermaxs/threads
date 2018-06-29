@@ -2,6 +2,7 @@ package com.epam.task3.model;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+
 public class CallCenter {
     private static volatile CallCenter instance;
     private BlockingQueue<Operator> staff;
